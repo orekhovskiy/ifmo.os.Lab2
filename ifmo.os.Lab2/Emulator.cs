@@ -14,7 +14,9 @@ namespace ifmo.os.Lab2
             // Pseudo proc preparation
             var procReleaseAt = 0;
             var timePassed = 0;
+            var maxQueueLength = 0;
 
+            // Emulation
             while (operations.Where(o => o.TimeLeaved == -1).Count() > 0)
             {
                 if (timePassed >= procReleaseAt)
@@ -26,19 +28,42 @@ namespace ifmo.os.Lab2
                         operations[ind].TimeLeaved = procReleaseAt;
                     }
                 }
+                maxQueueLength = GetMaxQueueLength(operations, 
+                    timePassed, maxQueueLength);
                 timePassed++;
             }
-            Log(operations, picker);
+            // Report purpose
+            Log(operations, picker, maxQueueLength);
         }
 
-        private static void Log(List<Operation> operations, IAlgorithm picker)
+        private static void Log(List<Operation> operations, IAlgorithm picker, int maxQueueLength)
         {
-            Console.WriteLine(picker);
+            Console.WriteLine($"Picking algorithm: {picker}");
+            Console.WriteLine($"Maximum length of the queue was {maxQueueLength}");
+            Console.WriteLine("Time arrived\tOperating time\tWaiting time");
             foreach (var operation in operations)
             {
-                Console.WriteLine($"\t{operation.TimeArrived}\t{operation.TimeLeaved}");
+                var waitingTime = operation.TimeLeaved - 
+                    operation.TimeArrived - operation.OperatingTime;
+                Console.WriteLine($"{operation.TimeArrived}\t\t{operation.OperatingTime}\t\t{waitingTime}");
             }
             Console.WriteLine();
+
+            foreach (var operation in operations)
+            {
+                var waitingTime = operation.TimeLeaved -
+                    operation.TimeArrived - operation.OperatingTime;
+                Console.WriteLine($"{waitingTime}");
+            }
+            Console.WriteLine();
+        }
+
+        private static int GetMaxQueueLength(List<Operation> operations, int timePassed, int maxQueueLength)
+        {
+            var curQueueLength = operations.Where(o =>
+                    o.TimeArrived <= timePassed &&
+                    o.TimeLeaved == -1).Count();
+            return Math.Max(curQueueLength, maxQueueLength);
         }
     }
 }
