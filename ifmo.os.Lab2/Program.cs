@@ -7,12 +7,18 @@ namespace ifmo.os.Lab2
 {
     class Program
     {
-        private static readonly int OperationsAmount = 20;
+        private static readonly int OperationsAmount = 25;
         static void Main(string[] args)
         {
             var data = Generator.GenerateData(OperationsAmount);
-            //Emulator.Emulate(data, new FCFSAlgorithm());
-            //Emulator.Emulate(data, new SPNAlgorithm());
+            Emulator.Emulate(data, new FCFSAlgorithm());
+
+            foreach (var operation in data)
+            {
+                operation.TimeLeaved = -1;
+            }
+
+            Emulator.Emulate(data, new SPNAlgorithm());
         }
     }
 }

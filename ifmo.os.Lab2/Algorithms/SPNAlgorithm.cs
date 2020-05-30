@@ -14,6 +14,11 @@ namespace ifmo.os.Lab2.Algorithms
                 operation.TimeLeaved == -1
             ).ToList();
 
+            if (queue.Count == 0)
+            {
+                return -1;
+            }
+
             var minOperatingTime = int.MaxValue;
             var ind = 0;
             for (var i = 0; i < queue.Count; i++)
@@ -28,6 +33,10 @@ namespace ifmo.os.Lab2.Algorithms
 
             return operations.FindIndex(operation => 
                 operation.TimeArrived == queue[ind].TimeArrived);
+        }
+        public override string ToString()
+        {
+            return "SPN";
         }
     }
 }
