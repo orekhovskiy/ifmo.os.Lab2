@@ -14,6 +14,7 @@ namespace ifmo.os.Lab2
         {
             TimeArrived = timeArrived;
             OperatingTime = operatingTime;
+            TimeLeaved = -1;
         }
     }
 }

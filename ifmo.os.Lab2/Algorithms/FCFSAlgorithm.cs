@@ -14,7 +14,7 @@ namespace ifmo.os.Lab2.Algorithms
             }
             for (var i = 0; i < operations.Count; i++)
             {
-                if (operations[i].TimeArrived >= timePassed)
+                if (operations[i].TimeArrived <= timePassed)
                 {
                     return i;
                 }
